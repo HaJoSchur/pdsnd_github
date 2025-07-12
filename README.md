@@ -1,6 +1,7 @@
 ### Date created
-This project was created on July, 12th.
-Last update was on July, 12th.
+* This project was created on July, 12th.
+* The `bikeshare_2.py` script was created on July, 5th.
+* Last update was on July, 12th.
 
 ### Project BikeShare
 Analysis of the bike rental data for Chicago, New York City and Washington.
