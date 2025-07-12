@@ -21,6 +21,10 @@ The .csv files contain data about the bike sharing in the city Chicago, New York
 * Customer type
 * Gender
 
-### Credits
-It's important to give proper credit. Add links to any repo that inspired you or blogposts you consulted.
+#### Python script
+The `bikeshare_2.py` script is divied into the main part and the different functions to analyse the data.
+* Main function loops through: calls first function to get the user input, analysis the data with all the other functions and ask the user to restart to continue with next data analysis
+* Functions: get_filters (user input), load_data, display_data, time_stats, stations_stats, trip_duration_stats and user_stats
 
+### Credits
+All credits belong to the udacity team. They created such an amazing course to start and dive deep into SQL and Python and even introduce you to version control. Big like!
