@@ -1,3 +1,4 @@
+import sys
 import time
 import pandas as pd
 
@@ -142,9 +143,16 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-    df = pd.read_csv(
-        CITY_DATA[city], parse_dates=["Start Time", "End Time"]
-    )  # parse dates for Start Time and End Time
+    try:
+        df = pd.read_csv(
+            CITY_DATA[city], parse_dates=["Start Time", "End Time"]
+        )  # parse dates for Start Time and End Time
+    except FileNotFoundError:
+        print(
+            f"Error: The file for {city.title()} could not be found. Please check the file path."
+        )
+        sys.exit(1)
+
     # extract month and day of week from Start Time to create new columns
     df["month"] = df["Start Time"].dt.month
     df["day_of_week"] = df["Start Time"].dt.day_of_week
