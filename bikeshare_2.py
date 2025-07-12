@@ -1,3 +1,4 @@
+import sys
 import time
 import pandas as pd
 
@@ -6,6 +7,24 @@ CITY_DATA = {
     "new york": "/Users/ha-joschur/Documents/Udacity/01 - Programming for Data Science with Python/Course 4 - Introduction to Python/Project Bikeshare/new_york_city.csv",
     "washington": "/Users/ha-joschur/Documents/Udacity/01 - Programming for Data Science with Python/Course 4 - Introduction to Python/Project Bikeshare/washington.csv",
 }
+
+DAYS = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+]
+MONTHS = [
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+]
 
 
 def get_filters():
@@ -41,14 +60,7 @@ def get_filters():
         month = input(
             "\nWhich month - January, February, March, April, May, or June?\n"
         ).lower()
-        while month not in [
-            "january",
-            "february",
-            "march",
-            "april",
-            "may",
-            "june",
-        ]:
+        while month not in MONTHS:
             month = input(
                 "Invalid input. Please enter 'January', 'February', 'March', 'April', 'May' or 'June'. \n"
             ).lower()
@@ -60,15 +72,7 @@ def get_filters():
         day = input(
             "\nWhich day - Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, or Sunday? \n"
         ).lower()
-        while day not in [
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
-            "sunday",
-        ]:
+        while day not in DAYS:
             day = input(
                 "Invalid input. Please enter 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' or 'Sunday'. \n"
             ).lower()
@@ -79,14 +83,7 @@ def get_filters():
         month = input(
             "\nWhich month - January, February, March, April, May, or June?\n"
         ).lower()
-        while month not in [
-            "january",
-            "february",
-            "march",
-            "april",
-            "may",
-            "june",
-        ]:
+        while month not in MONTHS:
             month = input(
                 "Invalid input. Please enter 'January', 'February', 'March', 'April', 'May' or 'June'. \n"
             ).lower()
@@ -95,15 +92,7 @@ def get_filters():
         day = input(
             "\nWhich day - Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, or Sunday? \n"
         ).lower()
-        while day not in [
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
-            "sunday",
-        ]:
+        while day not in DAYS:
             day = input(
                 "Invalid input. Please enter 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' or 'Sunday'. \n"
             ).lower()
@@ -154,9 +143,16 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-    df = pd.read_csv(
-        CITY_DATA[city], parse_dates=["Start Time", "End Time"]
-    )  # parse dates for Start Time and End Time
+    try:
+        df = pd.read_csv(
+            CITY_DATA[city], parse_dates=["Start Time", "End Time"]
+        )  # parse dates for Start Time and End Time
+    except FileNotFoundError:
+        print(
+            f"Error: The file for {city.title()} could not be found. Please check the file path."
+        )
+        sys.exit(1)
+
     # extract month and day of week from Start Time to create new columns
     df["month"] = df["Start Time"].dt.month
     df["day_of_week"] = df["Start Time"].dt.day_of_week
@@ -165,8 +161,7 @@ def load_data(city, month, day):
     # filter by month if applicable
     if month != "all":
         # use the index of the months list to get the corresponding int
-        months = ["january", "february", "march", "april", "may", "june"]
-        month = months.index(month) + 1
+        month = MONTHS.index(month) + 1
 
         # filter by month to create the new dataframe
         df = df[df["month"] == month]
@@ -174,16 +169,7 @@ def load_data(city, month, day):
     # filter by day of week if applicable
     if day != "all":
         # filter by day of week to create the new dataframe
-        days = [
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
-            "sunday",
-        ]
-        day = days.index(day)
+        day = DAYS.index(day)
         df = df[df["day_of_week"] == day]
 
     return df
@@ -240,33 +226,15 @@ def time_stats(df):
 
     print("\nCalculating The Most Frequent Times of Travel...\n")
     start_time = time.time()
-    months = [
-        "january",
-        "february",
-        "march",
-        "april",
-        "may",
-        "june",
-    ]
-    days = [
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-        "sunday",
-    ]
-
     # calculate the most common month
     popular_month = df["month"].mode()[0]
     # convert the month number to the month name
-    print("Most common month: ", months[popular_month - 1].title())
+    print("Most common month: ", MONTHS[popular_month - 1].title())
 
     # calculate the most common day of week
     popular_day = df["day_of_week"].mode()[0]
     # convert the day number to the day name
-    print("Most common day of week: ", days[popular_day].title())
+    print("Most common day of week: ", DAYS[popular_day].title())
 
     # display the most common start hour
     print(
