@@ -387,19 +387,23 @@ def main():
 
         display_data(df)  # Display raw data upon user request
 
-        time_stats(
-            df
-        )  # Calculate and display statistics on the most frequent times of travel
+        # Calculate and display statistics on the most frequent times of travel
+        time_stats(df)
+        # Calculate and display statistics on the most popular stations and trip
         station_stats(df)
+        # Calculate and display statistics on the total and average trip duration
         trip_duration_stats(df)
+        # Calculate and display statistics on bikeshare users
         user_stats(df)
 
+        # Ask user if they want to see more raw data
         restart = input(
             "\nWould you like to restart? Enter yes ('y'/'yes') or no ('n'/'no').\n"
         )
         while restart not in ["yes", "y", "no", "n"]:
             restart = input("Invalid input. Please enter 'yes' or 'no'. \n")
 
+        # If user doesn't want to restart, exit the loop
         if restart.lower() not in ["yes", "y"]:
             break
         else:
